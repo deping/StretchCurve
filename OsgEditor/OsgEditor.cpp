@@ -65,8 +65,6 @@ int main(int, char**)
     root->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
     root->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
     root->getOrCreateStateSet()->setMode(GL_LINE_SMOOTH, osg::StateAttribute::ON);
-    // off - square, on - circle
-    root->getOrCreateStateSet()->setMode(GL_POINT_SMOOTH, osg::StateAttribute::OFF);
     // add the state manipulator
     //viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 

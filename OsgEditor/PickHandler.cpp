@@ -17,7 +17,6 @@ PickHandler::PickHandler(osgViewer::View* pView, double offset)
 {
     assert(offset >= 3);
     assert(m_pView.valid());
-    m_pView->addEventHandler(this);
     auto root = m_pView->getSceneData();
     assert(root);
     root->getOrCreateStateSet()->setAttribute(new osg::Point(10));
@@ -27,6 +26,8 @@ PickHandler::PickHandler(osgViewer::View* pView, double offset)
     auto geode = new osg::Geode;
     group->addChild(geode);
     geode->addDrawable(m_gripPoints);
+    // off - square, on - circle
+    m_gripPoints->getOrCreateStateSet()->setMode(GL_POINT_SMOOTH, osg::StateAttribute::OFF);
 }
 
 PickHandler::~PickHandler()
@@ -47,31 +48,38 @@ bool PickHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapt
     switch (ea.getEventType())
     {
     case(osgGA::GUIEventAdapter::PUSH):
-        if (pick(view, ea))
+        if (ea.getButton() == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON)
         {
-            _mode = EditMode::DragPoint;
-            cloneDraggedObject();
-            //ea.setHandled(true);
-            return true;
+            if (pick(view, ea))
+            {
+                _mode = EditMode::DragPoint;
+                cloneDraggedObject();
+                return true;
+            }
+
         }
         break;
     case(osgGA::GUIEventAdapter::RELEASE):
-        if (_mode == EditMode::DragPoint)
+        if (ea.getButton() == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON)
         {
-            _mode = EditMode::None;
-            releaseDraggedObject();
-            stretch(view, ea, false);
-            updateGripPoints();
-            //ea.setHandled(true);
-            return true;
+            if (_mode == EditMode::DragPoint)
+            {
+                _mode = EditMode::None;
+                releaseDraggedObject();
+                stretch(view, ea, false);
+                updateGripPoints();
+                return true;
+            }
         }
         break;
     case(osgGA::GUIEventAdapter::DRAG):
-        if (_mode == EditMode::DragPoint)
+        if (ea.getButtonMask() == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON)
         {
-            stretch(view, ea, true);
-            //ea.setHandled(true);
-            return true;
+            if (_mode == EditMode::DragPoint)
+            {
+                stretch(view, ea, true);
+                return true;
+            }
         }
         break;
     case(osgGA::GUIEventAdapter::KEYDOWN):
@@ -86,7 +94,6 @@ bool PickHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapt
             {
                 m_gripPoints->_selectionSet.clear();
             }
-            //ea.setHandled(true);
             return true;
         }
         break;
