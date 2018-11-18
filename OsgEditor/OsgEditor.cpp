@@ -74,5 +74,6 @@ int main(int, char**)
     man->setHomePosition(osg::Vec3d(5, 5, 20), osg::Vec3d(5, 5, 0), osg::Vec3d(0, 1, 0));
     viewer.setCameraManipulator(man.get());
     viewer.realize();
+    viewer.setRunFrameScheme(osgViewer::Viewer::ON_DEMAND);
     return viewer.run();
 }
