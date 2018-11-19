@@ -5,7 +5,7 @@
 #include "IPlanarCurve.h"
 #include "PickHandler.h"
 
-void EnableEdit(osgViewer::View * pView, double offset)
+void EnableStretch(osgViewer::View * pView, double offset)
 {
     if (!pView)
         return;

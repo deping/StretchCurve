@@ -58,8 +58,8 @@ bool PointIntersector::intersect(const osg::Matrixd& VPW, OsgGripPoints* p)
         if (hit != -1)
         {
             // convert to local coord.
-            osg::Matrix inv = osg::Matrix::inverse(matrix);
-            it->second.hitPoint = hitPoint * inv;
+            //osg::Matrix inv = osg::Matrix::inverse(matrix);
+            //it->second.hitPoint = hitPoint * inv;
             ++hitCount;
         }
     }

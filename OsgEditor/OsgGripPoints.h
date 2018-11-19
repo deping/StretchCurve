@@ -12,7 +12,7 @@ struct SelectedCurveInfo
     osg::observer_ptr<osg::Drawable> curve;
     osg::ref_ptr<osg::Drawable> clone;
     std::vector<GripPoint> points;
-    osg::Vec3d hitPoint; // local coordinate
+    //osg::Vec3d hitPoint; // local coordinate
     int index;
 };
 

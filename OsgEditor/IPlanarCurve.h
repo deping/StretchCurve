@@ -33,4 +33,4 @@ struct IPlanarCurve
 
 const osg::Node::NodeMask HANDLE_NODE_MASK = 0x40000;
 
-void EnableEdit(osgViewer::View* pView, double offset = 5);
+void EnableStretch(osgViewer::View* pView, double offset = 5);
