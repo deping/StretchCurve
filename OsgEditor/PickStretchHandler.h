@@ -5,19 +5,19 @@
 #include <osgViewer/View>
 #include <osg/observer_ptr>
 
-class OsgGripPoints;
+class OsgControlPoints;
 // class to handle events with a pick
-class PickHandler : public osgGA::GUIEventHandler
+class PickStretchHandler : public osgGA::GUIEventHandler
 {
 public:
     enum class EditMode {None, DragPoint};
-    PickHandler(osgViewer::View* pView, double offset);
+    PickStretchHandler(osgViewer::View* pView, double offset);
 
-    ~PickHandler();
+    ~PickStretchHandler();
 
     virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) override;
 
-    // Pick "grip point" or curve. support xor selection(press ctrl) on picking curve.
+    // Pick "control point" or curve. support xor selection(press ctrl) on picking curve.
     virtual bool pick(osgViewer::View* view, const osgGA::GUIEventAdapter& ea);
 
 private:
@@ -28,7 +28,7 @@ private:
     osg::Matrix VPWmatrix(osg::Camera* cam);
 
     osg::observer_ptr<osgViewer::View> m_pView;
-    osg::ref_ptr<OsgGripPoints> m_gripPoints;
+    osg::ref_ptr<OsgControlPoints> m_gripPoints;
     double _offset;
     EditMode _mode;
 };

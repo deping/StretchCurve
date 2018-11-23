@@ -6,21 +6,21 @@ cmake_minimum_required (VERSION 3.8)
 set(HeaderFiles
 	IPlanarCurve.h
     OsgEditor.h
-    PickHandler.h
+    PickStretchHandler.h
     Utility.h
     PointIntersector.h
     CurveIntersector.h
-    OsgGripPoints.h
+    OsgControlPoints.h
     Line.h
 	)
 set(SourceFiles
 	IPlanarCurve.cpp
 	OsgEditor.cpp    
-    PickHandler.cpp
+    PickStretchHandler.cpp
     Utility.cpp
     PointIntersector.cpp
     CurveIntersector.cpp
-    OsgGripPoints.cpp
+    OsgControlPoints.cpp
     Line.cpp
 	)
 set(ResourceFiles

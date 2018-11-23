@@ -23,12 +23,12 @@ struct GripPoint
     GripType type;
 };
 
+// All points are in local coordinate system.
 struct IPlanarCurve
 {
     virtual bool nearest(const osg::Vec2d & localPt, osg::Vec2d& nearest) const = 0;
-    virtual void getHandles(std::vector<GripPoint>& points) const = 0;
-    // pos is in local coordinate system.
-    virtual void stretch(int index, GripType type, const osg::Vec2d& pos) = 0;
+    virtual void getControlPoints(std::vector<GripPoint>& points) const = 0;
+    virtual void stretch(int index, const osg::Vec2d& pos) = 0;
 };
 
 const osg::Node::NodeMask HANDLE_NODE_MASK = 0x40000;

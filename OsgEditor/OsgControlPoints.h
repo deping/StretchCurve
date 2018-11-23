@@ -11,17 +11,17 @@ struct SelectedCurveInfo
 {
     osg::observer_ptr<osg::Drawable> curve;
     osg::ref_ptr<osg::Drawable> clone;
-    std::vector<GripPoint> points;
+    std::vector<GripPoint> controlPoints;
     //osg::Vec3d hitPoint; // local coordinate
     int index;
 };
 
-// Draw Grip points of other objects which implements interface IPlanarCurve
-class OsgGripPoints : public osg::Geometry//Drawable
+// Draw control points of other objects which implements interface IPlanarCurve
+class OsgControlPoints : public osg::Geometry//Drawable
 {
 public:
-    OsgGripPoints();
-    ~OsgGripPoints();
+    OsgControlPoints();
+    ~OsgControlPoints();
     void build();
     void RemoveNode(const osg::NodePath& node);
     std::map<osg::NodePath, SelectedCurveInfo> _selectionSet;

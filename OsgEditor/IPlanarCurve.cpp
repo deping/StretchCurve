@@ -3,7 +3,7 @@
 //#include <algorithm>
 #include <numeric>
 #include "IPlanarCurve.h"
-#include "PickHandler.h"
+#include "PickStretchHandler.h"
 
 void EnableStretch(osgViewer::View * pView, double offset)
 {
@@ -15,11 +15,11 @@ void EnableStretch(osgViewer::View * pView, double offset)
     auto handlers = pView->getEventHandlers();
     for (auto handler : handlers)
     {
-        auto picker = dynamic_cast<PickHandler*>(handler.get());
+        auto picker = dynamic_cast<PickStretchHandler*>(handler.get());
         if (picker)
         {
             return;
         }
     }
-    pView->addEventHandler(new PickHandler(pView, offset));
+    pView->addEventHandler(new PickStretchHandler(pView, offset));
 }

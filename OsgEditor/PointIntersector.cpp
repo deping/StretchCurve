@@ -5,7 +5,7 @@
 #include <osg/Geometry>
 #include "IPlanarCurve.h"
 #include "Utility.h"
-#include "OsgGripPoints.h"
+#include "OsgControlPoints.h"
 
 PointIntersector::PointIntersector(double x, double y, double offset)
     : _screenX(x)
@@ -15,7 +15,7 @@ PointIntersector::PointIntersector(double x, double y, double offset)
     assert(offset >= 3.0);
 }
 
-bool PointIntersector::intersect(const osg::Matrixd& VPW, OsgGripPoints* p)
+bool PointIntersector::intersect(const osg::Matrixd& VPW, OsgControlPoints* p)
 {
     osg::Matrix invVPW = osg::Matrix::inverse(VPW);
     osg::Vec3d hitPoint;
@@ -33,7 +33,7 @@ bool PointIntersector::intersect(const osg::Matrixd& VPW, OsgGripPoints* p)
             continue;
         }
         osg::Vec3d ptInWindow = hitPoint * VPW;
-        auto& points = it->second.points;
+        auto& points = it->second.controlPoints;
         double dist_2 = _offset * _offset * 2;
         // pick only one control point in one curve.
         int hit = -1;

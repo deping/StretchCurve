@@ -3,13 +3,13 @@
 #include <osg/Drawable>
 #include "IPlanarCurve.h"
 
-class OsgGripPoints;
+class OsgControlPoints;
 class PointIntersector
 {
 public:
     PointIntersector(double x, double y, double offset = 5);
 
-    bool intersect(const osg::Matrixd& VPW, OsgGripPoints* p);
+    bool intersect(const osg::Matrixd& VPW, OsgControlPoints* p);
 
 protected:
 

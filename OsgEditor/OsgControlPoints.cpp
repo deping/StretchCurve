@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "OsgGripPoints.h"
+#include "OsgControlPoints.h"
 
 
-OsgGripPoints::OsgGripPoints()
+OsgControlPoints::OsgControlPoints()
     : _types(new NotIndexByteArray)
     , _points(new osg::Vec3Array)
     , _colors(new osg::Vec3Array)
@@ -12,16 +12,16 @@ OsgGripPoints::OsgGripPoints()
     addPrimitiveSet(_primitiveSet);
 }
 
-OsgGripPoints::~OsgGripPoints()
+OsgControlPoints::~OsgControlPoints()
 {
 }
 
-void OsgGripPoints::build()
+void OsgControlPoints::build()
 {
     size_t ptCount = 0;
     for (auto it = _selectionSet.begin(); it != _selectionSet.end(); ++it)
     {
-        ptCount += it->second.points.size();
+        ptCount += it->second.controlPoints.size();
     }
     _types->resize(ptCount);
     _points->resize(ptCount);
@@ -30,7 +30,7 @@ void OsgGripPoints::build()
     for (auto it = _selectionSet.begin(); it != _selectionSet.end(); ++it)
     {
         auto matrix = osg::computeLocalToWorld(it->first);
-        auto& points = it->second.points;
+        auto& points = it->second.controlPoints;
         for (size_t i = 0; i < points.size(); ++i)
         {
             (*_types)[ptIndex] = GLbyte(points[i].type);
@@ -51,7 +51,7 @@ void OsgGripPoints::build()
     _primitiveSet->set(GL_POINTS, 0, ptCount);
 }
 
-void OsgGripPoints::RemoveNode(const osg::NodePath & node)
+void OsgControlPoints::RemoveNode(const osg::NodePath & node)
 {
     _selectionSet.erase(node);
 }

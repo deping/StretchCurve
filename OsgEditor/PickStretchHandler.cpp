@@ -1,17 +1,17 @@
 #include <stdafx.h>
 #include <assert.h>
 #include <osg/Point>
-#include "PickHandler.h"
+#include "PickStretchHandler.h"
 #include "Utility.h"
 #include "IPlanarCurve.h"
 #include "PointIntersector.h"
 #include "CurveIntersector.h"
-#include "OsgGripPoints.h"
+#include "OsgControlPoints.h"
 
 
-PickHandler::PickHandler(osgViewer::View* pView, double offset)
+PickStretchHandler::PickStretchHandler(osgViewer::View* pView, double offset)
     : m_pView(pView)
-    , m_gripPoints(new OsgGripPoints)
+    , m_gripPoints(new OsgControlPoints)
     , _offset(offset)
     , _mode(EditMode::None)
 {
@@ -30,7 +30,7 @@ PickHandler::PickHandler(osgViewer::View* pView, double offset)
     m_gripPoints->getOrCreateStateSet()->setMode(GL_POINT_SMOOTH, osg::StateAttribute::OFF);
 }
 
-PickHandler::~PickHandler()
+PickStretchHandler::~PickStretchHandler()
 {
     auto pView = lock(m_pView);
     if (pView.valid())
@@ -40,7 +40,7 @@ PickHandler::~PickHandler()
     m_pView = nullptr;
 }
 
-bool PickHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
+bool PickStretchHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
 {
     osgViewer::View* view = dynamic_cast<osgViewer::View*>(&aa);
     if (!view)
@@ -103,7 +103,7 @@ bool PickHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapt
     return false;
 }
 
-bool PickHandler::pick(osgViewer::View* view, const osgGA::GUIEventAdapter& ea)
+bool PickStretchHandler::pick(osgViewer::View* view, const osgGA::GUIEventAdapter& ea)
 {
     osg::Camera* cam = view->getCamera();
     if (!cam)
@@ -115,7 +115,7 @@ bool PickHandler::pick(osgViewer::View* view, const osgGA::GUIEventAdapter& ea)
         osg::Matrix VPW = VPWmatrix(cam);
         PointIntersector pointPicker(ea.getX(), ea.getY(), _offset);
         bool hit = pointPicker.intersect(VPW, m_gripPoints.get());
-        // If any grip point is hit, return in order not to select curve.
+        // If any control point is hit, return in order not to select curve.
         if (hit)
         {
             m_gripPoints->build();
@@ -168,7 +168,7 @@ bool PickHandler::pick(osgViewer::View* view, const osgGA::GUIEventAdapter& ea)
     return false;
 }
 
-void PickHandler::stretch(osgViewer::View * view, const osgGA::GUIEventAdapter & ea, bool clone)
+void PickStretchHandler::stretch(osgViewer::View * view, const osgGA::GUIEventAdapter & ea, bool clone)
 {
     osg::Camera* cam = view->getCamera();
     if (!cam)
@@ -192,14 +192,14 @@ void PickHandler::stretch(osgViewer::View * view, const osgGA::GUIEventAdapter &
             pos = pos * invM;
             osg::Vec2d tmp(pos.x(), pos.y());
             if (clone)
-                dynamic_cast<IPlanarCurve*>(info.clone.get())->stretch(info.index, info.points[info.index].type, tmp);
+                dynamic_cast<IPlanarCurve*>(info.clone.get())->stretch(info.index, tmp);
             else
-                dynamic_cast<IPlanarCurve*>(info.curve.get())->stretch(info.index, info.points[info.index].type, tmp);
+                dynamic_cast<IPlanarCurve*>(info.curve.get())->stretch(info.index, tmp);
         }
     }
 }
 
-void PickHandler::cloneDraggedObject()
+void PickStretchHandler::cloneDraggedObject()
 {
     auto& curSelectionSet = m_gripPoints->_selectionSet;
     for (auto it = curSelectionSet.begin(); it != curSelectionSet.end(); ++it)
@@ -224,7 +224,7 @@ void PickHandler::cloneDraggedObject()
     }
 }
 
-void PickHandler::releaseDraggedObject()
+void PickStretchHandler::releaseDraggedObject()
 {
     auto& curSelectionSet = m_gripPoints->_selectionSet;
     for (auto it = curSelectionSet.begin(); it != curSelectionSet.end(); ++it)
@@ -242,18 +242,18 @@ void PickHandler::releaseDraggedObject()
     }
 }
 
-void PickHandler::updateGripPoints()
+void PickStretchHandler::updateGripPoints()
 {
     auto& curSelectionSet = m_gripPoints->_selectionSet;
     for (auto it = curSelectionSet.begin(); it != curSelectionSet.end(); ++it)
     {
         auto& info = it->second;
-        dynamic_cast<IPlanarCurve*>(info.curve.get())->getHandles(info.points);
+        dynamic_cast<IPlanarCurve*>(info.curve.get())->getControlPoints(info.controlPoints);
     }
     m_gripPoints->build();
 }
 
-osg::Matrix PickHandler::VPWmatrix(osg::Camera * cam)
+osg::Matrix PickStretchHandler::VPWmatrix(osg::Camera * cam)
 {
     osg::Matrix VPW = cam->getViewport()->computeWindowMatrix();
     VPW.preMult(cam->getProjectionMatrix());

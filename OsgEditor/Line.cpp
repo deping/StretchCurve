@@ -64,7 +64,7 @@ bool Line::nearest(const osg::Vec2d & localPt, osg::Vec2d& nearest) const
     return true;
 }
 
-void Line::getHandles(std::vector<GripPoint>& points) const
+void Line::getControlPoints(std::vector<GripPoint>& points) const
 {
     if (!_points.valid() || _points->empty())
         return;
@@ -76,7 +76,7 @@ void Line::getHandles(std::vector<GripPoint>& points) const
     }
 }
 
-void Line::stretch(int index, GripType type, const osg::Vec2d & pos)
+void Line::stretch(int index, const osg::Vec2d & pos)
 {
     (*_points)[index] = pos;
     _points->dirty();

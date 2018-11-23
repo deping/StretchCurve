@@ -14,9 +14,9 @@ public:
     virtual const char* libraryName() const { return "osg"; }
 
     virtual bool nearest(const osg::Vec2d & localPt, osg::Vec2d& nearest) const override;
-    virtual void getHandles(std::vector<GripPoint>& points) const override;
+    virtual void getControlPoints(std::vector<GripPoint>& points) const override;
     // pos is in local coordinate system.
-    virtual void stretch(int index, GripType type, const osg::Vec2d& pos) override;
+    virtual void stretch(int index, const osg::Vec2d& pos) override;
     void setPoints(osg::Vec2Array* points);
     void setColor(const osg::Vec4& color);
     virtual osg::BoundingBox Line::computeBoundingBox() const override;
